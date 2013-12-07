@@ -1,5 +1,5 @@
 # Swifty
-Swifty is a toy web framework built in Elixir that sits on top of [Elli](https://github.com/knutin/elli).
+Swifty is a toy web framework built in Elixir that sits on top of [Elli](https://github.com/knutin/elli). This project is a playground for me to learn Elixir. **This could be the worst idea ever.**
 
 ## Goals
 * Routes near the method being executed.

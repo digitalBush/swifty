@@ -3,6 +3,6 @@ defmodule Demo do
 	use Application.Behaviour
 
 	def start(_type, state) do
-	  { :ok, _pid } = :elli.start_link [callback: __MODULE__, port: state[:port]]
+	  { :ok, _pid } = Wubba.start_link [callback: __MODULE__, port: state[:port]]
 	end
 end

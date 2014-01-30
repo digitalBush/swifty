@@ -6,8 +6,7 @@ defmodule Swifty.Bootstrap do
 			@behaviour :elli_handler
 
 			def handle(request, _args) do
-				method = :elli_request.method(request)
-				path = :elli_request.path(request)
+				Wubba.Request[method: method, path: path] = request
 			    handle(method, path, request)
 			end
 

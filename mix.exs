@@ -14,6 +14,6 @@ defmodule Swifty.Mixfile do
   end
 
   defp deps do
-    [{:elli, github: "knutin/elli"}]
+    [{:wubba, github: "digitalBush/wubba"}]
   end
 end

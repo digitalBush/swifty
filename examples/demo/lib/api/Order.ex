@@ -2,7 +2,6 @@ defmodule Api.Order do
 	use Swifty.Resource, path: "/order"
 
 	get ":id" do
-		IO.puts("getting order info for order #{id}")
 		{:ok,[],"Order #{id}"}
 	end
 

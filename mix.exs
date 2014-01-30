@@ -4,7 +4,7 @@ defmodule Swifty.Mixfile do
   def project do
     [ app: :swifty,
       version: "0.0.1",
-      elixir: "~> 0.11.2",
+      elixir: "~> 0.12.0",
       deps: deps ]
   end
 

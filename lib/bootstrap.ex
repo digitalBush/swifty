@@ -24,7 +24,7 @@ defmodule Swifty.Bootstrap do
 
 		routes=File.ls!(path) 
 		|> Enum.map(&(Path.join path, &1))
-		|> Enum.map(&get_modules/1)
+		|> Enum.map(&load_modules_from_file/1)
 		|> List.flatten
 
 		#TODO: do we need to dig further and get full paths inside of resources?
@@ -42,15 +42,22 @@ defmodule Swifty.Bootstrap do
 		handlers ++ [fallback]
 	end
 
-	defp get_modules(file) do
+	defp load_modules_from_file(file) do
 		contents = File.read!(file)
-		forms = :elixir_translator.'forms!'(String.to_char_list!(contents), 1, file, [])
-		
-		lc {:defmodule,_line, [module_name,block|_]} inlist forms,
-			{:__aliases__, _line, namespace} = module_name, 
-			[{:do,{:__block__,_,[resource|_]}}] = block,
-			{:use, _line, [{:__aliases__, _line, [:Swifty,:Resource]}, [path: prefix]]} = resource,
-		do: {Module.concat(namespace), prefix}
+
+		forms = Code.string_to_quoted!(String.to_char_list!(contents), [line: 1, file: file])
+		get_modules(forms)
+	end
+
+	defp get_modules({:__block__, [], modules}) do
+		lc module inlist modules, do: get_modules(module)
+	end
+
+	defp get_modules({:defmodule,_line, [module_name,block|_]}) do
+		{:__aliases__, _line, namespace} = module_name 
+		[{:do,{:__block__,_,[resource|_]}}] = block
+		{:use, _line, [{:__aliases__, _line, [:Swifty,:Resource]}, [path: prefix]]} = resource
+		[{Module.concat(namespace), prefix}]
 	end
 
 	defp fallback do

@@ -1,7 +1,7 @@
 defmodule Swifty.Bootstrap do
-	defmacro __using__(opts // []) do 
+	defmacro __using__(opts \\ []) do 
 		path = Keyword.get(opts, :path, "lib/handlers")
-		
+
 		behavior = quote do
 			@behaviour :elli_handler
 
@@ -19,10 +19,10 @@ defmodule Swifty.Bootstrap do
 		[behavior | resources(path)]
 	end
 
-	defp resources(path) do 
+	defp resources(path) do
 		IO.puts("Loading resources from #{path}")
 
-		routes=File.ls!(path) 
+		routes=File.ls!(path)
 		|> Enum.map(&(Path.join path, &1))
 		|> Enum.map(&load_modules_from_file/1)
 		|> List.flatten
@@ -54,7 +54,7 @@ defmodule Swifty.Bootstrap do
 	end
 
 	defp get_modules({:defmodule,_line, [module_name,block|_]}) do
-		{:__aliases__, _line, namespace} = module_name 
+		{:__aliases__, _line, namespace} = module_name
 		[{:do,{:__block__,_,[resource|_]}}] = block
 		{:use, _line, [{:__aliases__, _line, [:Swifty,:Resource]}, [path: prefix]]} = resource
 		[{Module.concat(namespace), prefix}]

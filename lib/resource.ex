@@ -1,8 +1,8 @@
 defmodule Swifty.Resource do
+
 	defmacro __using__(opts) do
 		path = Keyword.get(opts, :path)
 		Module.put_attribute(__CALLER__.module, :resource_path, path)
-
 	    quote do
 	    	import Swifty.Resource
 	    end
